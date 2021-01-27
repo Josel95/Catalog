@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Catalog.Api.Controllers
@@ -22,41 +23,96 @@ namespace Catalog.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var products = await this.productRepository.GetProducts();
+            try
+            {
+                var products = await this.productRepository.GetProducts();
 
-            return Ok(products);
+                return Ok(products);
+            }
+            catch
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error ocurred.");
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var product = await this.productRepository.GetProduct(id);
+            if (id <= 0)
+            {
+                return BadRequest("The id parameter has to be greater than 0.");
+            }
 
-            return Ok(product);
+            try
+            {
+                var product = await this.productRepository.GetProduct(id);
+
+                if(product == null)
+                {
+                    return NotFound("The product was not found.");
+                }
+
+                return Ok(product);
+            }
+            catch
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error ocurred.");
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Post(Product product)
         {
-            var createdProduct = await this.productRepository.CreateProduct(product);
+            try
+            {
+                var createdProduct = await this.productRepository.CreateProduct(product);
 
-            return Ok(createdProduct);
+                return Ok(createdProduct);
+            }
+            catch
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error ocurred.");
+            }
         }
 
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(int id, Product product)
         {
-            var updatedProduct = await this.productRepository.UpdateProduct(id, product);
+            if (id <= 0)
+            {
+                return BadRequest("The id parameter has to be greater than 0.");
+            }
 
-            return Ok(updatedProduct);
+            try
+            {
+                var updatedProduct = await this.productRepository.UpdateProduct(id, product);
+
+                return Ok(updatedProduct);
+            }
+            catch
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error ocurred.");
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var deletedProduct = await this.productRepository.DeleteProduct(id);
+            if (id <= 0)
+            {
+                return BadRequest("The id parameter has to be greater than 0.");
+            }
 
-            return Ok(deletedProduct);
+            try
+            {
+                var deletedProduct = await this.productRepository.DeleteProduct(id);
+
+                return Ok(deletedProduct);
+            }
+            catch
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error ocurred.");
+            }
         }
     }
 }
