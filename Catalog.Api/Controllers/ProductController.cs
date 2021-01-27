@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Catalog.Api.Controllers
 {
@@ -76,7 +77,7 @@ namespace Catalog.Api.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Patch(int id, Product product)
+        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<Product> productJsonPatch)
         {
             if (id <= 0)
             {
@@ -85,7 +86,7 @@ namespace Catalog.Api.Controllers
 
             try
             {
-                var updatedProduct = await this.productRepository.UpdateProduct(id, product);
+                var updatedProduct = await this.productRepository.UpdateProduct(id, productJsonPatch);
 
                 return Ok(updatedProduct);
             }

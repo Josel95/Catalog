@@ -1,6 +1,7 @@
 ﻿using Catalog.Core.Entities;
 using Catalog.Core.Interfaces;
 using Catalog.Infrastructure.Data;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -42,16 +43,11 @@ namespace Catalog.Infrastructure.Repositories
             return createdProduct.Entity;
         }
 
-        public async Task<Product> UpdateProduct(int id, Product product)
+        public async Task<Product> UpdateProduct(int id, JsonPatchDocument<Product> productJsonPatch)
         {
             var updatedProduct = await context.Products.FindAsync(id);
 
-            updatedProduct.Description = product.Description;
-            updatedProduct.Image = product.Image;
-            updatedProduct.IsActive = product.IsActive;
-            updatedProduct.Name = product.Name;
-            updatedProduct.Price = product.Price;
-            updatedProduct.ReleaseDate = product.ReleaseDate;
+            productJsonPatch.ApplyTo(updatedProduct);
 
             await context.SaveChangesAsync();
 
