@@ -12,8 +12,7 @@ namespace Catalog.Core.Entities
         [Required(ErrorMessage = "The name field is required.")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "The price field is required.")]
-        [Range(0.0, float.MaxValue, ErrorMessage = "The price value must be greater than 0.")]
+        [Range(0.1, float.MaxValue, ErrorMessage = "The price value must be greater than 0.")]
         public float Price { get; set; }
 
         [MaxLength(240, ErrorMessage = "The description length must be minor than 240.")]

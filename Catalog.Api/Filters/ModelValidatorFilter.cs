@@ -17,7 +17,7 @@ namespace Catalog.Api.Filters
 
                 foreach (var field in context.ModelState)
                 {
-                    errors.Add(field.Key, field.Value.Errors.Select(error => error.ErrorMessage).ToArray());
+                    errors.Add(field.Key.ToLower(), field.Value.Errors.Select(error => error.ErrorMessage).ToArray());
                 }
 
                 throw new ModelValidationException(errors);

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.JsonPatch;
 using Catalog.Api.Responses;
 using Catalog.Core.Exceptions;
+using System.ComponentModel.DataAnnotations;
 
 namespace Catalog.Api.Controllers
 {
@@ -32,13 +33,10 @@ namespace Catalog.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(
+            [Range(0, int.MaxValue, ErrorMessage = "The id parameter has to be greater than 0.")] int id
+        )
         {
-            if (id <= 0)
-            {
-                throw new BadRequestException("The id parameter has to be greater than 0.");
-            }
-
             var product = await this.productRepository.GetProduct(id);
 
             if(product == null)
@@ -58,26 +56,21 @@ namespace Catalog.Api.Controllers
         }
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> Patch(int id, [FromBody] JsonPatchDocument<Product> productJsonPatch)
+        public async Task<IActionResult> Patch(
+            [Range(0, int.MaxValue, ErrorMessage = "The id parameter has to be greater than 0.")] int id,
+            [FromBody] JsonPatchDocument<Product> productJsonPatch
+        )
         {
-            if (id <= 0)
-            {
-                throw new BadRequestException("The id parameter has to be greater than 0.");
-            }
-
             var updatedProduct = await this.productRepository.UpdateProduct(id, productJsonPatch);
 
             return new ApiResult(updatedProduct);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(
+            [Range(0, int.MaxValue, ErrorMessage = "The id parameter has to be greater than 0.")] int id
+        )
         {
-            if (id <= 0)
-            {
-                throw new BadRequestException("The id parameter has to be greater than 0.");
-            }
-
             var deletedProduct = await this.productRepository.DeleteProduct(id);
 
             return new ApiResult(deletedProduct);
