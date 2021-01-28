@@ -1,3 +1,4 @@
+using Catalog.Api.Filters;
 using Catalog.Core.Interfaces;
 using Catalog.Infrastructure.Data;
 using Catalog.Infrastructure.Repositories;
@@ -29,13 +30,17 @@ namespace Catalog.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers(options => {
+                options.Filters.Add(typeof(ModelValidatorFilter));
+            }).AddNewtonsoftJson();
 
             services.AddDbContext<CatalogContext>(options =>
                 options.UseSqlServer(@"Server=DESKTOP-EM6JAFJ\SQLEXPRESS;Database=catalog;Trusted_Connection=True;")
             );
 
             services.AddTransient<IProductRepository, ProductRepository>();
+
+            services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +50,8 @@ namespace Catalog.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseExceptionHandler("/error");
 
             app.UseHttpsRedirection();
 
