@@ -35,7 +35,11 @@ namespace Catalog.Api
             }).AddNewtonsoftJson();
 
             services.AddDbContext<CatalogContext>(options =>
-                options.UseSqlServer(@"Server=DESKTOP-EM6JAFJ\SQLEXPRESS;Database=catalog;Trusted_Connection=True;")
+                /*
+                 * This configuration is in config.{env}.json file.
+                 * This file is gitignored so you should create the file if it doesn't exist.
+                 */
+                options.UseSqlServer(Configuration.GetConnectionString("Database"))
             );
 
             services.AddTransient<IProductRepository, ProductRepository>();
