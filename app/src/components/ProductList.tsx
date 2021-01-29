@@ -7,11 +7,13 @@ import { Product } from '../entities/Product'
 import { ProductItem } from './ProductItem'
 
 interface Props {
-    products: Product[]
+    products: Product[],
+    onDeleted: () => void
 }
 
 export const ProductList: FC<Props> = ({
-    products
+    products,
+    onDeleted
 }) => {
 
     return (
@@ -43,7 +45,7 @@ export const ProductList: FC<Props> = ({
             </thead>
             <tbody>
                 {
-                    products.map((product: Product) => <ProductItem key={product.id} product={product}/>)
+                    products.map((product: Product) => <ProductItem key={product.id} product={product} onDeleted={onDeleted}/>)
                 }
             </tbody>
         </Table>

@@ -19,6 +19,10 @@ export const HomePage: FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const handleDeleted = () => {
+        getProducts()
+    }
+
     return (
         <div>
             <h1 className="mb-4">Catálogo</h1>
@@ -35,7 +39,7 @@ export const HomePage: FC = () => {
                 <Col sm={12} className="d-flex justify-content-center align-items-center">
                     {
                         !loading && products
-                        ? <ProductList products={products}/>
+                        ? <ProductList products={products} onDeleted={handleDeleted}/>
                         : <Spinner animation="border" variant="primary"/>
                     }
                 </Col>
