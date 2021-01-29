@@ -30,6 +30,13 @@ namespace Catalog.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "localReactOrigin", builder => {
+                    builder.WithOrigins("http://localhost:3000");
+                });
+            });
+
             services.AddControllers(options => {
                 options.Filters.Add(typeof(ModelValidatorFilter));
             }).AddNewtonsoftJson();
@@ -54,6 +61,8 @@ namespace Catalog.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("localReactOrigin");
 
             app.UseExceptionHandler("/error");
 
