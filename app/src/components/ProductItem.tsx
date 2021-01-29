@@ -20,7 +20,7 @@ export const ProductItem: FC<Props> = ({
             <th>{ product.name }</th>
             <th>{ product.description }</th>
             <th>{ product.price }</th>
-            <th>{ product.releaseDate.toDateString() }</th>
+            <th>{ new Date(product.releaseDate).toDateString() }</th>
             <th>
                 {
                     product.isActive

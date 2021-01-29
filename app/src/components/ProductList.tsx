@@ -6,28 +6,13 @@ import { Product } from '../entities/Product'
 
 import { ProductItem } from './ProductItem'
 
-export const ProductList: FC = () => {
+interface Props {
+    products: Product[]
+}
 
-    const products: Product[] = [
-        {
-            id: 1,
-            name: "Televisión",
-            description: "La mejor televisión del mercado",
-            image: "https://via.placeholder.com/100x100png?text=product%2010",
-            price: 200,
-            releaseDate: new Date('2021-01-27T00:00:00'),
-            isActive: true
-        },
-        {
-            id: 2,
-            name: "Radio",
-            description: "La mejor Radio del mercado",
-            image: "https://via.placeholder.com/100x100png?text=product%2010",
-            price: 20,
-            releaseDate: new Date('2021-01-27T00:00:00'),
-            isActive: false
-        }
-    ]
+export const ProductList: FC<Props> = ({
+    products
+}) => {
 
     return (
         <Table bordered hover>
