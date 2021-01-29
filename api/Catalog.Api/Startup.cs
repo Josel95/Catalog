@@ -34,6 +34,7 @@ namespace Catalog.Api
             {
                 options.AddPolicy(name: "localReactOrigin", builder => {
                     builder.WithOrigins("http://localhost:3000");
+                    builder.AllowAnyHeader();
                 });
             });
 
